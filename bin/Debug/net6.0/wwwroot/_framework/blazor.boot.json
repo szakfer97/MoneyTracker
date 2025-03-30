@@ -197,13 +197,13 @@
       "mscorlib.dll": "sha256-mvS0gmCEk3NPPJPuIX5UWyIRyNxQ4WYYES39CBT9CK0=",
       "netstandard.dll": "sha256-6NXprR7wyUZxpdXxaSPHSoC5uOL5UCc7bsZG3TSuVxE=",
       "System.Private.CoreLib.dll": "sha256-igtwZSR0\/lrbmwL\/XiTsEkIeSL+736GHTZPReYguZCQ=",
-      "MoneyTracker.dll": "sha256-oA1Ggg0m+H\/nFo+fU71URLs+pwAE9cx9MSlKD1ta8iU="
+      "MoneyTracker.dll": "sha256-JCbGdVEkmddK4bU9vLeayjwGmqFmPGLp9N+yrJfOSuc="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
-      "MoneyTracker.pdb": "sha256-Ddfkw65YjBoyh3TthFsVUdznPqTbHsycRqRjkvuLAlQ="
+      "MoneyTracker.pdb": "sha256-AyLp8yz1DIl5+rmupROJSfJhT6FjWDDnC8FsNnA+dXw="
     },
     "runtime": {
       "dotnet.6.0.14.8i5preup7e.js": "sha256-54cJ6JdGhGbKaLWxHfRYzYbuyRq2wlK\/ZDzfSXD3FEs=",

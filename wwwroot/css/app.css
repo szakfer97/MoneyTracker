@@ -91,6 +91,7 @@ h6 {
 
 .text-primary {
   color: #4361ee !important;
+  font-weight: 800;
 }
 
 .bg-primary {
@@ -109,7 +110,6 @@ h6 {
   border-radius: 8px;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .card-body {
     padding: 1rem;

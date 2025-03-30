@@ -805,7 +805,6 @@ C:\Users\szakf\MyProjects\MoneyTracker\obj\Debug\net6.0\blazor.boot.json
 C:\Users\szakf\MyProjects\MoneyTracker\obj\Debug\net6.0\staticwebassets.build.json
 C:\Users\szakf\MyProjects\MoneyTracker\obj\Debug\net6.0\staticwebassets.development.json
 C:\Users\szakf\MyProjects\MoneyTracker\obj\Debug\net6.0\scopedcss\Shared\MainLayout.razor.rz.scp.css
-C:\Users\szakf\MyProjects\MoneyTracker\obj\Debug\net6.0\scopedcss\Shared\NavMenu.razor.rz.scp.css
 C:\Users\szakf\MyProjects\MoneyTracker\obj\Debug\net6.0\scopedcss\bundle\MoneyTracker.styles.css
 C:\Users\szakf\MyProjects\MoneyTracker\obj\Debug\net6.0\scopedcss\projectbundle\MoneyTracker.bundle.scp.css
 C:\Users\szakf\MyProjects\MoneyTracker\obj\Debug\net6.0\MoneyTracker.csproj.CopyComplete
