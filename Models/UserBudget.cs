@@ -13,12 +13,12 @@ namespace MoneyTracker.Models
 
         public decimal RemainingIncome => MonthlyIncome - TotalExpenses;
 
-        public decimal GroceriesPercentage => MonthlyIncome > 0 ? Math.Round((GroceriesExpense / MonthlyIncome) * 100, 2) : 0;
-        public decimal InsurancePercentage => MonthlyIncome > 0 ? Math.Round((InsuranceExpense / MonthlyIncome) * 100, 2) : 0;
-        public decimal CarPercentage => MonthlyIncome > 0 ? Math.Round((CarExpense / MonthlyIncome) * 100, 2) : 0;
-        public decimal HousingPercentage => MonthlyIncome > 0 ? Math.Round((HousingExpense / MonthlyIncome) * 100, 2) : 0;
-        public decimal MiscellaneousPercentage => MonthlyIncome > 0 ? Math.Round((MiscellaneousExpense / MonthlyIncome) * 100, 2) : 0;
+        public decimal GroceriesPercentage => MonthlyIncome > 0 ? Math.Round(GroceriesExpense / MonthlyIncome * 100, 2) : 0;
+        public decimal InsurancePercentage => MonthlyIncome > 0 ? Math.Round(InsuranceExpense / MonthlyIncome * 100, 2) : 0;
+        public decimal CarPercentage => MonthlyIncome > 0 ? Math.Round(CarExpense / MonthlyIncome * 100, 2) : 0;
+        public decimal HousingPercentage => MonthlyIncome > 0 ? Math.Round(HousingExpense / MonthlyIncome * 100, 2) : 0;
+        public decimal MiscellaneousPercentage => MonthlyIncome > 0 ? Math.Round(MiscellaneousExpense / MonthlyIncome * 100, 2) : 0;
 
-        public decimal TotalPercentage => MonthlyIncome > 0 ? Math.Round((TotalExpenses / MonthlyIncome) * 100, 2) : 0;
+        public decimal TotalPercentage => MonthlyIncome > 0 ? Math.Round(TotalExpenses / MonthlyIncome * 100, 2) : 0;
     }
 }

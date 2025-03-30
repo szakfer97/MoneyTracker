@@ -2,4 +2,4 @@
 
 Money tracking app built with Blazor
 
-Use yarn dev to start app
+Use dotnet run to start app
