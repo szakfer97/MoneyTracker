@@ -1,17 +1,15 @@
 ﻿@inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
     <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+        <div class="container-fluid">
             @Body
-        </article>
+        </div>
     </main>
 </div>
+
+<footer class="footer text-center py-3 mt-5">
+    <div class="container">
+        <span class="text-muted">MoneyTracker © @DateTime.Now.Year - Your Personal Budget Assistant</span>
+    </div>
+</footer>

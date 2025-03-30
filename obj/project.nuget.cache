@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "3/Ad8BPbmDB9NFNmZZNud6IZGheiqdGGMirqL6BIlBXYa3ul/7lvvXUlv9tUB9EzEgxhrKF8lv3TKFGes+DGWw==",
+  "dgSpecHash": "ZGmxHJqSornZnWG/P+Zrbsp/5jK3mJp1qN1wFz6KVLoNBuM5YkUshVwDLHHBZy+JVfz0sHjENMIZce2gHdNndg==",
   "success": true,
   "projectFilePath": "C:\\Users\\szakf\\MyProjects\\MoneyTracker\\MoneyTracker.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\szakf\\.nuget\\packages\\blazored.localstorage\\4.5.0\\blazored.localstorage.4.5.0.nupkg.sha512",
     "C:\\Users\\szakf\\.nuget\\packages\\microsoft.aspnetcore.authorization\\6.0.14\\microsoft.aspnetcore.authorization.6.0.14.nupkg.sha512",
     "C:\\Users\\szakf\\.nuget\\packages\\microsoft.aspnetcore.components\\6.0.14\\microsoft.aspnetcore.components.6.0.14.nupkg.sha512",
     "C:\\Users\\szakf\\.nuget\\packages\\microsoft.aspnetcore.components.analyzers\\6.0.14\\microsoft.aspnetcore.components.analyzers.6.0.14.nupkg.sha512",

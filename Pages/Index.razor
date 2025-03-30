@@ -1,9 +1,266 @@
 ﻿@page "/"
+@using Microsoft.JSInterop
+@using MoneyTracker.Models
+@using MoneyTracker.Services
+@inject LocalStorageService LocalStorageService
+@inject IJSRuntime JSRuntime
 
-<PageTitle>Index</PageTitle>
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-12 text-center mb-4">
+            <h1 class="display-4 text-primary">MoneyTracker</h1>
+            <p class="lead">Track your spending and see if your budget is affordable</p>
+        </div>
+    </div>
 
-<h1>Hello, world!</h1>
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Income & Expenses</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label for="monthlyIncome" class="form-label">Monthly Income</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="monthlyIncome" @bind="Budget.MonthlyIncome" @bind:event="oninput" @onchange="UpdateBudget" />
+                        </div>
+                    </div>
 
-Welcome to your new app.
+                    <h4 class="mt-4">Expenses</h4>
+                    <div class="form-group mb-3">
+                        <label for="groceries" class="form-label">Groceries</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="groceries" @bind="Budget.GroceriesExpense" @bind:event="oninput" @onchange="UpdateBudget" />
+                            <span class="input-group-text">@Budget.GroceriesPercentage%</span>
+                        </div>
+                    </div>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+                    <div class="form-group mb-3">
+                        <label for="insurance" class="form-label">Insurance</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="insurance" @bind="Budget.InsuranceExpense" @bind:event="oninput" @onchange="UpdateBudget" />
+                            <span class="input-group-text">@Budget.InsurancePercentage%</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="car" class="form-label">Car Expenses</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="car" @bind="Budget.CarExpense" @bind:event="oninput" @onchange="UpdateBudget" />
+                            <span class="input-group-text">@Budget.CarPercentage%</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="housing" class="form-label">Rent/Mortgage</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="housing" @bind="Budget.HousingExpense" @bind:event="oninput" @onchange="UpdateBudget" />
+                            <span class="input-group-text">@Budget.HousingPercentage%</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="misc" class="form-label">Miscellaneous</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="number" step="0.01" class="form-control" id="misc" @bind="Budget.MiscellaneousExpense" @bind:event="oninput" @onchange="UpdateBudget" />
+                            <span class="input-group-text">@Budget.MiscellaneousPercentage%</span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <button class="btn btn-primary me-md-2" @onclick="SaveBudget">Save Budget</button>
+                        <button class="btn btn-secondary" @onclick="ClearBudget">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">Budget Summary</h3>
+                </div>
+                <div class="card-body">
+                    <div class="summary-item d-flex justify-content-between py-2 border-bottom">
+                        <span>Total Monthly Income:</span>
+                        <span class="fw-bold">$@Budget.MonthlyIncome.ToString("0.00")</span>
+                    </div>
+                    <div class="summary-item d-flex justify-content-between py-2 border-bottom">
+                        <span>Total Expenses:</span>
+                        <span class="fw-bold">$@Budget.TotalExpenses.ToString("0.00")</span>
+                    </div>
+                    <div class="summary-item d-flex justify-content-between py-2 border-bottom">
+                        <span>Remaining Income:</span>
+                        <span class="fw-bold @(Budget.RemainingIncome >= 0 ? "text-success" : "text-danger")">
+                            $@Budget.RemainingIncome.ToString("0.00")
+                        </span>
+                    </div>
+                    <div class="summary-item d-flex justify-content-between py-2 border-bottom">
+                        <span>Total Percentage of Income Used:</span>
+                        <span class="fw-bold @GetPercentageColorClass(Budget.TotalPercentage)">
+                            @Budget.TotalPercentage%
+                        </span>
+                    </div>
+
+                    <div class="mt-4">
+                        <h4>Expense Breakdown</h4>
+                        <div class="progress-container mb-2">
+                            <div class="d-flex justify-content-between">
+                                <span>Groceries</span>
+                                <span>@Budget.GroceriesPercentage%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: @Math.Min(Budget.GroceriesPercentage, 100)%"
+                                     aria-valuenow="@Budget.GroceriesPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-container mb-2">
+                            <div class="d-flex justify-content-between">
+                                <span>Insurance</span>
+                                <span>@Budget.InsurancePercentage%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @Math.Min(Budget.InsurancePercentage, 100)%"
+                                     aria-valuenow="@Budget.InsurancePercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-container mb-2">
+                            <div class="d-flex justify-content-between">
+                                <span>Car Expenses</span>
+                                <span>@Budget.CarPercentage%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: @Math.Min(Budget.CarPercentage, 100)%"
+                                     aria-valuenow="@Budget.CarPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-container mb-2">
+                            <div class="d-flex justify-content-between">
+                                <span>Rent/Mortgage</span>
+                                <span>@Budget.HousingPercentage%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-primary" role="progressbar" style="width: @Math.Min(Budget.HousingPercentage, 100)%"
+                                     aria-valuenow="@Budget.HousingPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+
+                        <div class="progress-container mb-2">
+                            <div class="d-flex justify-content-between">
+                                <span>Miscellaneous</span>
+                                <span>@Budget.MiscellaneousPercentage%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar bg-secondary" role="progressbar" style="width: @Math.Min(Budget.MiscellaneousPercentage, 100)%"
+                                     aria-valuenow="@Budget.MiscellaneousPercentage" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="alert @GetBudgetStatusAlertClass()" role="alert">
+                            <h4 class="alert-heading">@GetBudgetStatusHeading()</h4>
+                            <p>@GetBudgetStatusMessage()</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white">
+                    <h3 class="mb-0">Currency to Percentage Calculator</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group mb-3">
+                        <label for="calcAmount" class="form-label">Amount ($)</label>
+                        <input type="number" step="0.01" class="form-control" id="calcAmount" @bind="CalculatorAmount" />
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="calcIncome" class="form-label">of Income ($)</label>
+                        <input type="number" step="0.01" class="form-control" id="calcIncome" @bind="CalculatorIncome" />
+                    </div>
+                    <div class="alert alert-info mt-3">
+                        <strong>Result:</strong> $@CalculatorAmount.ToString("0.00") is @CalculatePercentage()% of $@CalculatorIncome.ToString("0.00")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private UserBudget Budget { get; set; } = new UserBudget();
+    private decimal CalculatorAmount { get; set; } = 0;
+    private decimal CalculatorIncome { get; set; } = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Budget = await LocalStorageService.GetUserBudgetAsync();
+    }
+
+    private async Task UpdateBudget()
+    {
+        await SaveBudget();
+    }
+
+    private async Task SaveBudget()
+    {
+        await LocalStorageService.SaveUserBudgetAsync(Budget);
+        await JSRuntime.InvokeVoidAsync("alert", "Budget saved successfully!");
+    }
+
+    private async Task ClearBudget()
+    {
+        Budget = new UserBudget();
+        await LocalStorageService.ClearUserBudgetAsync();
+        await JSRuntime.InvokeVoidAsync("alert", "Budget cleared!");
+    }
+
+    private string GetPercentageColorClass(decimal percentage)
+    {
+        if (percentage < 70) return "text-success";
+        if (percentage < 90) return "text-warning";
+        return "text-danger";
+    }
+
+    private string GetBudgetStatusAlertClass()
+    {
+        if (Budget.TotalPercentage < 70) return "alert-success";
+        if (Budget.TotalPercentage < 90) return "alert-warning";
+        return "alert-danger";
+    }
+
+    private string GetBudgetStatusHeading()
+    {
+        if (Budget.TotalPercentage < 70) return "Your budget looks healthy!";
+        if (Budget.TotalPercentage < 90) return "Your budget is getting tight!";
+        return "Your budget is not sustainable!";
+    }
+
+    private string GetBudgetStatusMessage()
+    {
+        if (Budget.TotalPercentage < 70)
+            return "You're spending less than 70% of your income, which is a good financial position.";
+        if (Budget.TotalPercentage < 90)
+            return "You're spending between 70-90% of your income. Consider reducing some expenses to have a better safety margin.";
+        if (Budget.TotalPercentage < 100)
+            return "You're spending over 90% of your income. This leaves very little room for emergencies or savings.";
+        return "You're spending more than your income. This is not sustainable and you need to reduce expenses or increase income.";
+    }
+
+    private string CalculatePercentage()
+    {
+        if (CalculatorIncome <= 0) return "0.00";
+        return Math.Round((CalculatorAmount / CalculatorIncome) * 100, 2).ToString("0.00");
+    }
+}
