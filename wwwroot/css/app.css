@@ -75,6 +75,11 @@ body {
   border-color: #ff0000;
 }
 
+.btn-secondary:hover {
+  background-color: #d30000;
+  border-color: #d30000;
+}
+
 .summary-item {
   padding: 10px 0;
 }
